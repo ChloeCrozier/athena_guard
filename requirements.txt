@@ -1,0 +1,7 @@
+requests
+pyyaml
+psutil
+prometheus_client
+schedule
+slurm-py
+rich
