@@ -77,3 +77,5 @@ Run the following commands in separate terminals (or use tools like `tmux` or `s
 
 - **Grafana**: [http://130.127.89.162:3000/](http://130.127.89.162:3000/)
 - **Prometheus**: [http://130.127.89.162:9090/](http://130.127.89.162:9090/)
+- **Alertmanager**: [http://130.127.89.162:9093/](http://130.127.89.162:9093/)
+- **Node Exporter**: [http://130.127.89.162:9100/](http://130.127.89.162:9100/)
