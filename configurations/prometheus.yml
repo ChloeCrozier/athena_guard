@@ -8,7 +8,7 @@ alerting:
         - targets: ['localhost:9093']
 
 rule_files:
-  - "/root/athena_guard/configurations/athenaguard_alerts.yml"
+  - "../configurations/athenaguard_alerts.yml"
 
 scrape_configs:
   - job_name: 'prometheus'

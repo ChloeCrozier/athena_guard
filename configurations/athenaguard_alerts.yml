@@ -2,20 +2,20 @@ groups:
   - name: athenaguard
     rules:
       - alert: HighFailedLoginRate
-        expr: rate(login_failure_total[1m]) > 5
+        expr: login_failure_total > 5
         for: 30s
         labels:
           severity: warning
         annotations:
-          summary: "🚨 High Failed Login Rate"
-          description: "{{ $value }} failures in the past minute on {{ $labels.instance }}"
+          summary: "High Failed Login Rate"
+          description: "{{ $value }} failures detected on {{ $labels.instance }}"
 
       - alert: ExcessiveSudoActivity
-        expr: rate(sudo_command_total[1m]) > 10
+        expr: sudo_command_total > 10
         for: 30s
         labels:
           severity: critical
         annotations:
-          summary: "⚠️ Excessive sudo activity"
-          description: "{{ $value }} sudo commands in last minute on {{ $labels.instance }}"
+          summary: "Excessive sudo activity"
+          description: "{{ $value }} sudo commands detected on {{ $labels.instance }}"
 
