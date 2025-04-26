@@ -2,46 +2,40 @@
 
 # Load environment variables
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# Load environment variables relative to the script's directory
 source "$SCRIPT_DIR/../../.env"
 
-# Stop any old services first
-echo "Stopping any services that are currently running..."
-$ATHENAGUARD_PATH/scripts/run_scripts/stop_athena_guard.sh
-
-echo ""
-echo ""
 echo "🚀 Starting AthenaGuard monitoring services..."
 
-# Define paths
-LOG_DIR="$ATHENAGUARD_PATH/logs"
-PROMETHEUS_DIR="$ATHENAGUARD_PATH/prometheus"
-NODE_EXPORTER_DIR="$ATHENAGUARD_PATH/node_exporter"
-ALERTMANAGER_DIR="$ATHENAGUARD_PATH/alert_manager"
-GRAFANA_DIR="$ATHENAGUARD_PATH/grafana/bin"
-
-# Create log directory if it doesn't exist
-mkdir -p "$LOG_DIR"
-
+#stop services
 # Start Node Exporter
 echo "🟢 Starting Node Exporter..."
-cd "$NODE_EXPORTER_DIR"
-nohup ./node_exporter --collector.textfile.directory=/var/lib/node_exporter/textfile_collector/ > "$LOG_DIR/node_exporter.log" 2>&1 &
+cd "$ATHENAGUARD_PATH/$NODE_EXPORTER_FOLDER"
+nohup ./node_exporter --collector.textfile.directory=/var/lib/node_exporter/textfile_collector/ > "$ATHENAGUARD_PATH/logs/node_exporter.log" 2>&1 &
+cd -
 
 # Start Alertmanager
 echo "🟠 Starting Alertmanager..."
-cd "$ALERTMANAGER_DIR"
-nohup ./alertmanager --config.file="$ATHENAGUARD_PATH/configurations/alertmanager.yml" > "$LOG_DIR/alertmanager.log" 2>&1 &
+cd "$ATHENAGUARD_PATH/$ALERTMANAGER_FOLDER"
+nohup ./alertmanager --config.file="$ATHENAGUARD_PATH/configurations/alertmanager.yml" > "$ATHENAGUARD_PATH/logs/alertmanager.log" 2>&1 &
+cd -
 
 # Start Prometheus
 echo "🔵 Starting Prometheus..."
-cd "$PROMETHEUS_DIR"
-nohup ./prometheus --config.file="$ATHENAGUARD_PATH/configurations/prometheus.yml" > "$LOG_DIR/prometheus.log" 2>&1 &
+cd "$ATHENAGUARD_PATH/$PROMETHEUS_FOLDER"
+nohup ./prometheus --config.file="$ATHENAGUARD_PATH/configurations/prometheus.yml" > "$ATHENAGUARD_PATH/logs/prometheus.log" 2>&1 &
+cd -
 
 # Start Grafana
 echo "🟣 Starting Grafana Server..."
-cd "$GRAFANA_DIR"
-nohup ./grafana-server --homepath "$ATHENAGUARD_PATH/grafana" > "$LOG_DIR/grafana.log" 2>&1 &
+cd "$ATHENAGUARD_PATH/$GRAFANA_FOLDER/bin"
+nohup ./grafana-server web > "$ATHENAGUARD_PATH/logs/grafana.log" 2>&1 &
+cd -
 
-echo "✅ All AthenaGuard services started! Logs are in $LOG_DIR"
+echo "✅ All AthenaGuard services started! Logs are in $ATHENAGUARD_PATH/logs"
+
+echo ""
+echo "Service Status:"
+echo "- Prometheus    : http://$ATHENAGUARD_IP:$PROMETHEUS_PORT"
+echo "- Node Exporter : http://$ATHENAGUARD_IP:$NODE_EXPORTER_PORT"
+echo "- Alertmanager  : http://$ATHENAGUARD_IP:$ALERTMANAGER_PORT"
+echo "- Grafana       : http://$ATHENAGUARD_IP:$GRAFANA_PORT"
