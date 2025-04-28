@@ -1,0 +1,18 @@
+login_failure_total 0
+login_success_total 2
+invalid_user_login_attempts 0
+repeat_failed_login_sources 0
+
+logged_in_users 2
+logged_in_user_list{user="chloe"} 1
+
+sudo_command_total 2
+sudo_command_user_total{user="chloe"} 2
+
+open_ports_total 30
+connections_external 9
+
+zombie_processes_total 0
+home_dir_size_kb 243203604
+
+athenaguard_last_update 2025-04-28 18:15:38

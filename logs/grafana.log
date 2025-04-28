@@ -1,41 +1,35 @@
 Deprecation warning: The standalone 'grafana-server' program is deprecated and will be removed in the future. Please update all uses of 'grafana-server' to 'grafana server'
 Grafana server is running with elevated privileges. This is not recommended
-logger=settings t=2025-04-26T12:12:41.984550796-04:00 level=info msg="Starting Grafana" version=10.2.3 commit=1e84fede543acc892d2a2515187e545eb047f237 branch=HEAD compiled=2023-12-18T10:46:07-05:00
-logger=settings t=2025-04-26T12:12:41.984704893-04:00 level=info msg="Config loaded from" file=/home/chloe/athena_guard/grafana/conf/defaults.ini
-logger=settings t=2025-04-26T12:12:41.984718449-04:00 level=info msg=Target target=[all]
-logger=settings t=2025-04-26T12:12:41.984727416-04:00 level=info msg="Path Home" path=/home/chloe/athena_guard/grafana
-logger=settings t=2025-04-26T12:12:41.984733558-04:00 level=info msg="Path Data" path=/home/chloe/athena_guard/grafana/data
-logger=settings t=2025-04-26T12:12:41.984739319-04:00 level=info msg="Path Logs" path=/home/chloe/athena_guard/grafana/data/log
-logger=settings t=2025-04-26T12:12:41.984745461-04:00 level=info msg="Path Plugins" path=/home/chloe/athena_guard/grafana/data/plugins
-logger=settings t=2025-04-26T12:12:41.984752014-04:00 level=info msg="Path Provisioning" path=/home/chloe/athena_guard/grafana/conf/provisioning
-logger=settings t=2025-04-26T12:12:41.984763336-04:00 level=info msg="App mode production"
-logger=sqlstore t=2025-04-26T12:12:41.984963592-04:00 level=info msg="Connecting to DB" dbtype=sqlite3
-logger=migrator t=2025-04-26T12:12:41.985326301-04:00 level=info msg="Starting DB migrations"
-logger=migrator t=2025-04-26T12:12:41.995798952-04:00 level=info msg="migrations completed" performed=0 skipped=523 duration=306.882µs
-logger=secrets t=2025-04-26T12:12:41.996367047-04:00 level=info msg="Envelope encryption state" enabled=true currentprovider=secretKey.v1
-logger=plugin.store t=2025-04-26T12:12:42.007942644-04:00 level=info msg="Loading plugins..."
-logger=plugins.registration t=2025-04-26T12:12:42.030751509-04:00 level=info msg="Plugin registered" pluginId=input
-logger=local.finder t=2025-04-26T12:12:42.030775415-04:00 level=warn msg="Skipping finding plugins as directory does not exist" path=/home/chloe/athena_guard/grafana/data/plugins
-logger=plugin.store t=2025-04-26T12:12:42.030786657-04:00 level=info msg="Plugins loaded" count=56 duration=22.844353ms
-logger=query_data t=2025-04-26T12:12:42.033304491-04:00 level=info msg="Query Service initialization"
-logger=live.push_http t=2025-04-26T12:12:42.036269367-04:00 level=info msg="Live Push Gateway initialization"
-logger=ngalert.migration t=2025-04-26T12:12:42.037409465-04:00 level=info msg=Starting
-logger=ngalert.migration CurrentType=UnifiedAlerting DesiredType=UnifiedAlerting CleanOnDowngrade=false CleanOnUpgrade=false t=2025-04-26T12:12:42.037693513-04:00 level=info msg="Migration already complete"
-logger=infra.usagestats.collector t=2025-04-26T12:12:42.045235894-04:00 level=info msg="registering usage stat providers" usageStatsProvidersLen=2
-logger=provisioning.alerting t=2025-04-26T12:12:42.046191106-04:00 level=info msg="starting to provision alerting"
-logger=provisioning.alerting t=2025-04-26T12:12:42.046226063-04:00 level=info msg="finished to provision alerting"
-logger=ngalert.state.manager t=2025-04-26T12:12:42.046360432-04:00 level=info msg="Warming state cache for startup"
-logger=grafanaStorageLogger t=2025-04-26T12:12:42.046408716-04:00 level=info msg="Storage starting"
-logger=ngalert.multiorg.alertmanager t=2025-04-26T12:12:42.046414126-04:00 level=info msg="Starting MultiOrg Alertmanager"
-logger=http.server t=2025-04-26T12:12:42.048186072-04:00 level=info msg="HTTP Server Listen" address=[::]:3000 protocol=http subUrl= socket=
-logger=ngalert.state.manager t=2025-04-26T12:12:42.081128574-04:00 level=info msg="State cache has been initialized" states=0 duration=34.766078ms
-logger=ngalert.scheduler t=2025-04-26T12:12:42.081160656-04:00 level=info msg="Starting scheduler" tickInterval=10s
-logger=ticker t=2025-04-26T12:12:42.081205643-04:00 level=info msg=starting first_tick=2025-04-26T12:12:50-04:00
-logger=plugins.update.checker t=2025-04-26T12:12:42.10314466-04:00 level=info msg="Update check succeeded" duration=56.784518ms
-logger=grafana.update.checker t=2025-04-26T12:12:42.105751316-04:00 level=info msg="Update check succeeded" duration=59.358882ms
-logger=context userId=1 orgId=1 uname=admin t=2025-04-26T12:13:01.524979078-04:00 level=info msg="Request Completed" method=GET path=/api/live/ws status=-1 remote_addr=172.23.3.182 time_ms=1 duration=1.357778ms size=0 referer= handler=/api/live/ws
-logger=live t=2025-04-26T12:13:01.913403044-04:00 level=info msg="Initialized channel handler" channel=grafana/dashboard/uid/a6655f3c-6f9f-47a3-817d-af242d8b39f2 address=grafana/dashboard/uid/a6655f3c-6f9f-47a3-817d-af242d8b39f2
-logger=infra.usagestats t=2025-04-26T12:13:16.05002559-04:00 level=info msg="Usage stats are ready to report"
-logger=server t=2025-04-26T12:14:56.390255791-04:00 level=info msg="Shutdown started" reason="System signal: terminated"
-logger=ticker t=2025-04-26T12:14:56.390361054-04:00 level=info msg=stopped last_tick=2025-04-26T12:14:50-04:00
-logger=tracing t=2025-04-26T12:14:56.390382375-04:00 level=info msg="Closing tracing"
+logger=settings t=2025-04-28T18:27:59.245080775-04:00 level=info msg="Starting Grafana" version=10.2.3 commit=1e84fede543acc892d2a2515187e545eb047f237 branch=HEAD compiled=2023-12-18T10:46:07-05:00
+logger=settings t=2025-04-28T18:27:59.245230514-04:00 level=info msg="Config loaded from" file=/home/chloe/athena_guard/grafana/conf/defaults.ini
+logger=settings t=2025-04-28T18:27:59.245241305-04:00 level=info msg=Target target=[all]
+logger=settings t=2025-04-28T18:27:59.245249911-04:00 level=info msg="Path Home" path=/home/chloe/athena_guard/grafana
+logger=settings t=2025-04-28T18:27:59.245256264-04:00 level=info msg="Path Data" path=/home/chloe/athena_guard/grafana/data
+logger=settings t=2025-04-28T18:27:59.245262095-04:00 level=info msg="Path Logs" path=/home/chloe/athena_guard/grafana/data/log
+logger=settings t=2025-04-28T18:27:59.245268016-04:00 level=info msg="Path Plugins" path=/home/chloe/athena_guard/grafana/data/plugins
+logger=settings t=2025-04-28T18:27:59.245273767-04:00 level=info msg="Path Provisioning" path=/home/chloe/athena_guard/grafana/conf/provisioning
+logger=settings t=2025-04-28T18:27:59.245279929-04:00 level=info msg="App mode production"
+logger=sqlstore t=2025-04-28T18:27:59.245457682-04:00 level=info msg="Connecting to DB" dbtype=sqlite3
+logger=migrator t=2025-04-28T18:27:59.245828537-04:00 level=info msg="Starting DB migrations"
+logger=migrator t=2025-04-28T18:27:59.256357308-04:00 level=info msg="migrations completed" performed=0 skipped=523 duration=404.249µs
+logger=secrets t=2025-04-28T18:27:59.256958858-04:00 level=info msg="Envelope encryption state" enabled=true currentprovider=secretKey.v1
+logger=plugin.store t=2025-04-28T18:27:59.268539877-04:00 level=info msg="Loading plugins..."
+logger=plugins.registration t=2025-04-28T18:27:59.290985155-04:00 level=info msg="Plugin registered" pluginId=input
+logger=local.finder t=2025-04-28T18:27:59.29100879-04:00 level=warn msg="Skipping finding plugins as directory does not exist" path=/home/chloe/athena_guard/grafana/data/plugins
+logger=plugin.store t=2025-04-28T18:27:59.29101903-04:00 level=info msg="Plugins loaded" count=56 duration=22.479934ms
+logger=query_data t=2025-04-28T18:27:59.293648249-04:00 level=info msg="Query Service initialization"
+logger=live.push_http t=2025-04-28T18:27:59.295808525-04:00 level=info msg="Live Push Gateway initialization"
+logger=ngalert.migration t=2025-04-28T18:27:59.296958632-04:00 level=info msg=Starting
+logger=ngalert.migration CurrentType=UnifiedAlerting DesiredType=UnifiedAlerting CleanOnDowngrade=false CleanOnUpgrade=false t=2025-04-28T18:27:59.297235827-04:00 level=info msg="Migration already complete"
+logger=infra.usagestats.collector t=2025-04-28T18:27:59.303614586-04:00 level=info msg="registering usage stat providers" usageStatsProvidersLen=2
+logger=provisioning.alerting t=2025-04-28T18:27:59.304029436-04:00 level=info msg="starting to provision alerting"
+logger=provisioning.alerting t=2025-04-28T18:27:59.30404194-04:00 level=info msg="finished to provision alerting"
+logger=grafanaStorageLogger t=2025-04-28T18:27:59.30417682-04:00 level=info msg="Storage starting"
+logger=ngalert.state.manager t=2025-04-28T18:27:59.304208341-04:00 level=info msg="Warming state cache for startup"
+logger=ngalert.multiorg.alertmanager t=2025-04-28T18:27:59.304247145-04:00 level=info msg="Starting MultiOrg Alertmanager"
+logger=http.server t=2025-04-28T18:27:59.305941823-04:00 level=info msg="HTTP Server Listen" address=[::]:3000 protocol=http subUrl= socket=
+logger=ngalert.state.manager t=2025-04-28T18:27:59.33069505-04:00 level=info msg="State cache has been initialized" states=0 duration=26.48659ms
+logger=ngalert.scheduler t=2025-04-28T18:27:59.330719037-04:00 level=info msg="Starting scheduler" tickInterval=10s
+logger=ticker t=2025-04-28T18:27:59.33076233-04:00 level=info msg=starting first_tick=2025-04-28T18:28:00-04:00
+logger=plugins.update.checker t=2025-04-28T18:27:59.361199858-04:00 level=info msg="Update check succeeded" duration=56.978192ms
+logger=grafana.update.checker t=2025-04-28T18:27:59.362880939-04:00 level=info msg="Update check succeeded" duration=58.649034ms
