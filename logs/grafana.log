@@ -36,3 +36,6 @@ logger=grafana.update.checker t=2025-04-26T12:12:42.105751316-04:00 level=info m
 logger=context userId=1 orgId=1 uname=admin t=2025-04-26T12:13:01.524979078-04:00 level=info msg="Request Completed" method=GET path=/api/live/ws status=-1 remote_addr=172.23.3.182 time_ms=1 duration=1.357778ms size=0 referer= handler=/api/live/ws
 logger=live t=2025-04-26T12:13:01.913403044-04:00 level=info msg="Initialized channel handler" channel=grafana/dashboard/uid/a6655f3c-6f9f-47a3-817d-af242d8b39f2 address=grafana/dashboard/uid/a6655f3c-6f9f-47a3-817d-af242d8b39f2
 logger=infra.usagestats t=2025-04-26T12:13:16.05002559-04:00 level=info msg="Usage stats are ready to report"
+logger=server t=2025-04-26T12:14:56.390255791-04:00 level=info msg="Shutdown started" reason="System signal: terminated"
+logger=ticker t=2025-04-26T12:14:56.390361054-04:00 level=info msg=stopped last_tick=2025-04-26T12:14:50-04:00
+logger=tracing t=2025-04-26T12:14:56.390382375-04:00 level=info msg="Closing tracing"

@@ -8,3 +8,5 @@ ts=2025-04-26T16:12:41.924Z caller=tls_config.go:274 level=info msg="Listening o
 ts=2025-04-26T16:12:41.924Z caller=tls_config.go:277 level=info msg="TLS is disabled." http2=false address=[::]:9093
 ts=2025-04-26T16:12:43.903Z caller=cluster.go:708 level=info component=cluster msg="gossip not settled" polls=0 before=0 now=1 elapsed=2.000841414s
 ts=2025-04-26T16:12:51.907Z caller=cluster.go:700 level=info component=cluster msg="gossip settled; proceeding" elapsed=10.004423217s
+ts=2025-04-26T16:13:52.740Z caller=dispatch.go:352 level=error component=dispatcher msg="Notify for alerts failed" num_alerts=2 err="discord/webhook[0]: notify retry canceled due to unrecoverable error after 1 attempts: unexpected status code 400: https://discord.com/api/webhooks/1365353324349624483/DaMyVFVQpuWaK5GtFmhaJCDg1mhfwf7VE8Hcm42Yvu7NOCce2joPGPiSh38zbVjay-Sv: {\"message\": \"Cannot send an empty message\", \"code\": 50006}"
+ts=2025-04-26T16:14:56.337Z caller=main.go:594 level=info msg="Received SIGTERM, exiting gracefully..."
