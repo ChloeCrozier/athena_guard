@@ -13,3 +13,5 @@ crontab -e
 # 🚨 Run incremental alert dispatcher every 60 minutes
 0 * * * * /home/chloe/athena_guard/scripts/alert_scripts/rule_alerts.sh >> /home/chloe/athena_guard/logs/rule_alerts.log 2>&1
 
+0 3 */7 * * /home/chloe/athena_guard/scripts/cleanup/cleanup_logs.sh
+

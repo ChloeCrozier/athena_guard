@@ -4,11 +4,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../../.env"
 
 NOW=$(date +%s)
-CUTOFF=$((NOW - 300))  # Last 5 minutes
+CUTOFF=$((NOW - 300))  # 5 minutes
 CURRENT_YEAR=$(date +%Y)
 SECURE_LOG="/var/log/secure"
+LOG_FILE="$ATHENAGUARD_PATH/logs/quick_summary.log"
 
-# Function to convert "Apr 30 08:31:03" → epoch
 log_to_epoch() {
   log_time="$1"
   date -d "$log_time $CURRENT_YEAR" +%s 2>/dev/null
@@ -44,9 +44,8 @@ function min(str)  { return substr(str, 11, 2) }
 function sec(str)  { return substr(str, 14, 2) }
 ' "$SECURE_LOG")
 
-# Build Discord message
+# Build message
 MESSAGE="🛡️ **AthenaGuard Summary** — $(date '+%Y-%m-%d %H:%M:%S')"
-
 USERS=$(who | awk '{print $1}' | sort -u | paste -sd ' ')
 MESSAGE+="\n✅ Logged in: ${USERS:-None}"
 
@@ -60,12 +59,22 @@ if [[ -n "$NEW_FAILS" ]]; then
   MESSAGE+="\n🛑 Failed logins: $FORMATTED_FAILS"
 fi
 
-# Send if there's new content
-if [[ -n "$NEW_SUDO" || -n "$NEW_FAILS" ]]; then
-  echo -e "[Alert sent to Discord] $(date)"
+# Log it
+echo -e "$MESSAGE\n" >> "$LOG_FILE"
+
+# Handle Discord message length
+MAX_LEN=1900
+if [[ ${#MESSAGE} -gt $MAX_LEN ]]; then
+  ALERT="⚠️ AthenaGuard Summary — $(date '+%Y-%m-%d %H:%M:%S')\nToo many entries to display here.\n📄 See full summary: logs/quick_summary.log"
+  curl -s -X POST -H "Content-Type: application/json" \
+    -d "{\"content\": \"$ALERT\"}" \
+    "$DISCORD_WEBHOOK_URL"
+  echo "[⚠️ Truncated alert sent] $(date)"
+elif [[ -n "$NEW_SUDO" || -n "$NEW_FAILS" ]]; then
   curl -s -X POST -H "Content-Type: application/json" \
     -d "{\"content\": \"$MESSAGE\"}" \
     "$DISCORD_WEBHOOK_URL"
+  echo "[✅ Alert sent to Discord] $(date)"
 else
   echo "[No new activity] $(date)"
 fi
