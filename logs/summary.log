@@ -1,0 +1,12 @@
+[Init] Snapshot saved at Wed Apr 30 07:32:18 EDT 2025
+[No Change] Wed Apr 30 07:32:46 EDT 2025
+[No Change] Wed Apr 30 07:32:57 EDT 2025
+🛡️ AthenaGuard Summary — 2025-04-30 07:33:13\n✅ Logged in: chloe\n🔐 Recent sudo: Apr 28 17:34:24 COMMAND=/bin/su Apr 28 18:01:01 COMMAND=/bin/su Apr 28 18:42:12 COMMAND=/bin/su Apr 29 16:51:09 COMMAND=/bin/su Apr 30 06:38:34 COMMAND=/bin/su Apr 30 06:38:42 COMMAND=/bin/su Apr 30 07:05:28 crond Apr 30 07:06:58 crond\n🛑 Failed logins: Apr 30 06:42:40 root Apr 30 06:58:01 root Apr 30 06:58:05 root Apr 30 06:58:09 root Apr 30 07:12:25 root Apr 30 07:13:35 root Apr 30 07:13:40 root Apr 30 07:33:03 root Apr 30 07:33:07 root Apr 30 07:33:11 root
+[No Change] Wed Apr 30 07:35:40 EDT 2025
+🛡️ AthenaGuard Summary — 2025-04-30 07:36:17\n✅ Logged in: chloe\n🔐 Recent sudo: Apr 28 17:34:24 COMMAND=/bin/su Apr 28 18:01:01 COMMAND=/bin/su Apr 28 18:42:12 COMMAND=/bin/su Apr 29 16:51:09 COMMAND=/bin/su Apr 30 06:38:34 COMMAND=/bin/su Apr 30 06:38:42 COMMAND=/bin/su Apr 30 07:05:28 crond Apr 30 07:06:58 crond Apr 30 07:36:08 COMMAND=/bin/ls\n🛑 Failed logins: Apr 30 06:42:40 root Apr 30 06:58:01 root Apr 30 06:58:05 root Apr 30 06:58:09 root Apr 30 07:12:25 root Apr 30 07:13:35 root Apr 30 07:13:40 root Apr 30 07:33:03 root Apr 30 07:33:07 root Apr 30 07:33:11 root
+🛡️ AthenaGuard Summary — 2025-04-30 07:38:02\n✅ Logged in: chloe\n🔐 Recent sudo: Apr 30 06:38:34 COMMAND=/bin/su Apr 30 06:38:42 COMMAND=/bin/su Apr 30 07:05:28 crond Apr 30 07:06:58 crond Apr 30 07:36:08 COMMAND=/bin/ls Apr 30 07:37:14 COMMAND=/bin/ls Apr 30 07:37:16 COMMAND=/bin/ls Apr 30 07:37:17 COMMAND=/bin/ls Apr 30 07:37:25 COMMAND=/bin/sudo Apr 30 07:37:32 -la\n🛑 Failed logins: Apr 30 06:58:09 root Apr 30 07:12:25 root Apr 30 07:13:35 root Apr 30 07:13:40 root Apr 30 07:33:03 root Apr 30 07:33:07 root Apr 30 07:33:11 root Apr 30 07:37:45 root Apr 30 07:37:50 root Apr 30 07:37:54 root
+[No Change] Wed Apr 30 07:39:01 EDT 2025
+[No Change] Wed Apr 30 07:40:01 EDT 2025
+[No Change] Wed Apr 30 07:41:01 EDT 2025
+[No Change] Wed Apr 30 07:42:01 EDT 2025
+[No Change] Wed Apr 30 07:43:01 EDT 2025

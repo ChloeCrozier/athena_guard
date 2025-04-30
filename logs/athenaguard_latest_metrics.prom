@@ -1,20 +1,20 @@
-login_failure_total 12
-login_success_total 6
+login_failure_total 18
+login_success_total 7
 invalid_user_login_attempts 0
 repeat_failed_login_sources 1
 
-logged_in_users 2
+logged_in_users 3
 logged_in_user_list{user="chloe"} 1
 
-sudo_command_total 8
+sudo_command_total 14
 sudo_command_user_total{user="benjamin"} 1
-sudo_command_user_total{user="chloe"} 5
+sudo_command_user_total{user="chloe"} 11
 sudo_command_user_total{user="root"} 2
 
 open_ports_total 30
-connections_external 13
+connections_external 14
 
 zombie_processes_total 0
-home_dir_size_kb 243231236
+home_dir_size_kb 243232504
 
-athenaguard_last_update 2025-04-30 07:30:48
+athenaguard_last_update 2025-04-30 07:43:04
