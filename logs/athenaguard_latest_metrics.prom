@@ -12,9 +12,9 @@ sudo_command_user_total{user="chloe"} 11
 sudo_command_user_total{user="root"} 2
 
 open_ports_total 30
-connections_external 14
+connections_external 16
 
 zombie_processes_total 0
-home_dir_size_kb 243232512
+home_dir_size_kb 243232608
 
-athenaguard_last_update 2025-04-30 07:44:34
+athenaguard_last_update 2025-04-30 07:47:49

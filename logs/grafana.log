@@ -47,3 +47,6 @@ logger=infra.usagestats t=2025-04-30T07:28:48.952191355-04:00 level=info msg="Us
 logger=cleanup t=2025-04-30T07:37:18.960495369-04:00 level=info msg="Completed cleanup jobs" duration=14.469576ms
 logger=plugins.update.checker t=2025-04-30T07:37:19.04695113-04:00 level=info msg="Update check succeeded" duration=45.532483ms
 logger=grafana.update.checker t=2025-04-30T07:37:19.061094658-04:00 level=info msg="Update check succeeded" duration=58.23305ms
+logger=cleanup t=2025-04-30T07:47:18.961382116-04:00 level=info msg="Completed cleanup jobs" duration=15.261062ms
+logger=plugins.update.checker t=2025-04-30T07:47:19.046968572-04:00 level=info msg="Update check succeeded" duration=45.391342ms
+logger=grafana.update.checker t=2025-04-30T07:47:19.059973614-04:00 level=info msg="Update check succeeded" duration=57.147066ms
