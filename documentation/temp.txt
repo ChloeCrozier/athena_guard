@@ -7,11 +7,12 @@ crontab -e
 * * * * * sleep 30 && /home/chloe/athena_guard/scripts/metric_scripts/athena_guard_metrics.sh
 * * * * * sleep 45 && /home/chloe/athena_guard/scripts/metric_scripts/athena_guard_metrics.sh
 
-# 🕵️ Run summary monitoring every 5 minutes
-*/5 * * * * /home/chloe/athena_guard/scripts/alert_scripts/quick_summary.sh >> /home/chloe/athena_guard/logs/quick_summary.log 2>&1
+# 🕵️ Run summary monitoring every 2 minutes
+*/2 * * * * /home/chloe/athena_guard/scripts/alert_scripts/quick_summary.sh >> /home/chloe/athena_guard/logs/quick_summary.log 2>&1
 
-# 🚨 Run incremental alert dispatcher every 60 minutes
-0 * * * * /home/chloe/athena_guard/scripts/alert_scripts/rule_alerts.sh >> /home/chloe/athena_guard/logs/rule_alerts.log 2>&1
+# 🚨 Run incremental alert dispatcher every 2 minutes
+*/2 * * * * /home/chloe/athena_guard/scripts/alert_scripts/rule_alerts.sh >> /home/chloe/athena_guard/logs/rule_alerts.log 2>&1
 
+# 🧹 Delete all logs every 7 days
 0 3 */7 * * /home/chloe/athena_guard/scripts/cleanup/cleanup_logs.sh
 

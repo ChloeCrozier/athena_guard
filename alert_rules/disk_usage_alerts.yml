@@ -1,0 +1,12 @@
+groups:
+  - name: disk_usage
+    rules:
+      - alert: LargeHomeDirectory
+        expr: home_dir_size_kb > 100000000
+        for: 0s
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Home Directory Usage"
+          description: "Home directory is using {{ $value }} KB on {{ $labels.instance }}"
+

@@ -1,0 +1,12 @@
+groups:
+  - name: repeat_failed_logins
+    rules:
+      - alert: RepeatFailedLoginSources
+        expr: repeat_failed_login_sources > 0
+        for: 2m  # optional: allows time for alert to stabilize
+        labels:
+          severity: warning
+        annotations:
+          summary: "🚨 Repeated Failed Login Attempts"
+          description: "{{ $value }} IP addresses had repeated failed login attempts on {{ $labels.instance }}"
+

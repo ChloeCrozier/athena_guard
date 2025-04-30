@@ -1,21 +1,12 @@
 groups:
-  - name: athenaguard
+  - name: sudo-activity
     rules:
-      - alert: HighFailedLoginRate
-        expr: login_failure_total > 5
-        for: 1s
+      - alert: SudoSpikeDetected
+        expr: increase(sudo_command_total[1m]) > 5
+        for: 0s
         labels:
           severity: warning
         annotations:
-          summary: "High Failed Login Rate"
-          description: "{{ $value }} failures detected on {{ $labels.instance }}"
-
-      - alert: ExcessiveSudoActivity
-        expr: sudo_command_total > 10
-        for: 1s
-        labels:
-          severity: critical
-        annotations:
-          summary: "Excessive sudo activity"
-          description: "{{ $value }} sudo commands detected on {{ $labels.instance }}"
+          summary: "🔐 Sudden Sudo Spike"
+          description: "{{ $value }} sudo commands detected in the last minute on {{ $labels.instance }}."
 

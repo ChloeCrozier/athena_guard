@@ -1,0 +1,12 @@
+groups:
+  - name: invalid_logins
+    rules:
+      - alert: InvalidUserLoginAttempts
+        expr: invalid_user_login_attempts > 0
+        for: 0s
+        labels:
+          severity: warning
+        annotations:
+          summary: "Invalid Login Attempt Detected"
+          description: "{{ $value }} invalid login attempts on {{ $labels.instance }}"
+

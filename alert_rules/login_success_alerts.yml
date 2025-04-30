@@ -1,0 +1,12 @@
+groups:
+  - name: login_success
+    rules:
+      - alert: UnexpectedLoginSpike
+        expr: login_success_total > 20
+        for: 0s
+        labels:
+          severity: info
+        annotations:
+          summary: "High Login Activity"
+          description: "{{ $value }} successful logins on {{ $labels.instance }}"
+

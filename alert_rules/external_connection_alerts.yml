@@ -1,0 +1,12 @@
+groups:
+  - name: external_connections
+    rules:
+      - alert: HighExternalConnections
+        expr: connections_external > 20
+        for: 0s
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Number of External Connections"
+          description: "{{ $value }} external connections on {{ $labels.instance }}"
+

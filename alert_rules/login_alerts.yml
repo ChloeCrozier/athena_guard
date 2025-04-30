@@ -1,0 +1,12 @@
+groups:
+  - name: login-monitoring
+    rules:
+      - alert: TooManyLoggedInUsers
+        expr: logged_in_users > 10
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "👥 High Number of Logged-In Users"
+          description: "{{ $value }} users currently logged in to {{ $labels.instance }} for over a minute."
+
