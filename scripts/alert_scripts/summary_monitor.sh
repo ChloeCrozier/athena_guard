@@ -1,78 +1,72 @@
 #!/bin/bash
 
-# Load environment
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../../.env"
 
-STATE_DIR="$ATHENAGUARD_PATH/tmp/summary_state"
-CURRENT_STATE="$STATE_DIR/current_summary.json"
-LAST_STATE="$STATE_DIR/last_summary.json"
-LAST_CHECK_FILE="$STATE_DIR/last_check_time"
-LOGFILE="$ATHENAGUARD_PATH/logs/summary.log"
+NOW=$(date +%s)
+CUTOFF=$((NOW - 300))  # Last 5 minutes
+CURRENT_YEAR=$(date +%Y)
+SECURE_LOG="/var/log/secure"
 
-mkdir -p "$STATE_DIR"
-
-# Get current timestamp and last check time
-NOW_EPOCH=$(date +%s)
-if [[ -f "$LAST_CHECK_FILE" ]]; then
-  LAST_EPOCH=$(cat "$LAST_CHECK_FILE")
-else
-  LAST_EPOCH=0
-fi
-echo "$NOW_EPOCH" > "$LAST_CHECK_FILE"
-
-# Helper to send to Discord
-send_discord_alert() {
-  local message="$1"
-  curl -s -X POST -H "Content-Type: application/json" \
-    -d "{\"content\": \"$message\"}" \
-    "$DISCORD_WEBHOOK_URL" > /dev/null
+# Function to convert "Apr 30 08:31:03" → epoch
+log_to_epoch() {
+  log_time="$1"
+  date -d "$log_time $CURRENT_YEAR" +%s 2>/dev/null
 }
 
-# Basic system state (always included)
-LOGGED_IN=$(who | awk '{print $1}' | sort | uniq | xargs)
-OPEN_PORTS=$(ss -tuln | grep -c LISTEN)
+# Get recent sudo lines
+NEW_SUDO=$(awk -v cutoff="$CUTOFF" -v year="$CURRENT_YEAR" '
+/COMMAND=/ {
+  line = $0
+  datetime = sprintf("%s %s %s", $1, $2, $3)
+  cmd_ts = mktime(year " " month(datetime) " " day(datetime) " " hour(datetime) " " min(datetime) " " sec(datetime))
+  if (cmd_ts >= cutoff) print line
+}
+function month(str) { return (index("JanFebMarAprMayJunJulAugSepOctNovDec", substr(str, 1, 3)) + 2) / 3 }
+function day(str)  { return substr(str, 5, 2) }
+function hour(str) { return substr(str, 8, 2) }
+function min(str)  { return substr(str, 11, 2) }
+function sec(str)  { return substr(str, 14, 2) }
+' "$SECURE_LOG")
 
-# New sudo commands since last check
-NEW_SUDO=$(awk -v last="$LAST_EPOCH" '
-  $0 ~ /COMMAND=/ {
-    timestamp = sprintf("%s %s %s", $1, $2, $3)
-    cmd_epoch = mktime(gensub(/:/, " ", "g", timestamp " 00"))
-    if (cmd_epoch > last) {
-      user = $6
-      cmd = $NF
-      print "- " user ": " timestamp " " cmd
-    }
-  }
-' /var/log/secure)
+# Get recent failed login lines
+NEW_FAILS=$(awk -v cutoff="$CUTOFF" -v year="$CURRENT_YEAR" '
+/Failed password/ {
+  line = $0
+  datetime = sprintf("%s %s %s", $1, $2, $3)
+  cmd_ts = mktime(year " " month(datetime) " " day(datetime) " " hour(datetime) " " min(datetime) " " sec(datetime))
+  if (cmd_ts >= cutoff) print line
+}
+function month(str) { return (index("JanFebMarAprMayJunJulAugSepOctNovDec", substr(str, 1, 3)) + 2) / 3 }
+function day(str)  { return substr(str, 5, 2) }
+function hour(str) { return substr(str, 8, 2) }
+function min(str)  { return substr(str, 11, 2) }
+function sec(str)  { return substr(str, 14, 2) }
+' "$SECURE_LOG")
 
-# New failed logins since last check
-NEW_FAILS=$(awk -v last="$LAST_EPOCH" '
-  $0 ~ /Failed password/ {
-    timestamp = sprintf("%s %s %s", $1, $2, $3)
-    fail_epoch = mktime(gensub(/:/, " ", "g", timestamp " 00"))
-    if (fail_epoch > last) {
-      user = $(NF-5)
-      print "- " user ": " timestamp
-    }
-  }
-' /var/log/secure)
+# Build Discord message
+MESSAGE="🛡️ **AthenaGuard Summary** — $(date '+%Y-%m-%d %H:%M:%S')"
 
-# Exit if nothing changed
-if [[ -z "$NEW_SUDO" && -z "$NEW_FAILS" ]]; then
-  echo "[No Change] $(date)" >> "$LOGFILE"
-  exit 0
+USERS=$(who | awk '{print $1}' | sort -u | paste -sd ' ')
+MESSAGE+="\n✅ Logged in: ${USERS:-None}"
+
+if [[ -n "$NEW_SUDO" ]]; then
+  FORMATTED_SUDO=$(echo "$NEW_SUDO" | awk '{print $1, $2, $3, $(NF)}' | paste -sd ', ')
+  MESSAGE+="\n🔐 Recent sudo: $FORMATTED_SUDO"
 fi
 
-# Build the summary message
-MESSAGE="🛡️ AthenaGuard Summary — $(date +'%Y-%m-%d %H:%M:%S')"
-MESSAGE+="\n\n✅ Logged in: $LOGGED_IN"
-MESSAGE+="\n📡 Open ports: $OPEN_PORTS"
+if [[ -n "$NEW_FAILS" ]]; then
+  FORMATTED_FAILS=$(echo "$NEW_FAILS" | awk '{print $1, $2, $3, $(NF-5)}' | paste -sd ', ')
+  MESSAGE+="\n🛑 Failed logins: $FORMATTED_FAILS"
+fi
 
-[[ ! -z "$NEW_SUDO" ]] && MESSAGE+="\n\n🔐 New sudo commands:\n$NEW_SUDO"
-[[ ! -z "$NEW_FAILS" ]] && MESSAGE+="\n\n🛑 Failed login attempts:\n$NEW_FAILS"
-
-# Send and log
-send_discord_alert "$MESSAGE"
-echo -e "$MESSAGE\n" >> "$LOGFILE"
+# Send if there's new content
+if [[ -n "$NEW_SUDO" || -n "$NEW_FAILS" ]]; then
+  echo -e "[Alert sent to Discord] $(date)"
+  curl -s -X POST -H "Content-Type: application/json" \
+    -d "{\"content\": \"$MESSAGE\"}" \
+    "$DISCORD_WEBHOOK_URL"
+else
+  echo "[No new activity] $(date)"
+fi
 
