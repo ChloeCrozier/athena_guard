@@ -34,5 +34,13 @@ else
   echo "🔴 Grafana is NOT running"
 fi
 
+CRON_STATUS=$(sudo systemctl is-active crond)
+if [[ "$CRON_STATUS" == "active" ]]; then
+  echo "🕒 Cron (crond) is running"
+else
+  echo "🔴 Cron (crond) is NOT running"
+fi
+
+
 echo "✅ Status check complete."
 

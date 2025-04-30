@@ -7,7 +7,7 @@ source "$SCRIPT_DIR/../../.env"
 echo "🚀 Starting AthenaGuard monitoring services..."
 
 # Stop services first
-/home/chloe/athena_guard/scripts/run_scripts/stop_athena_guard.sh
+"$SCRIPT_DIR/stop_athena_guard.sh"
 
 # Start Node Exporter
 echo "🟢 Starting Node Exporter..."
@@ -23,10 +23,11 @@ cd - > /dev/null
 
 # Start Prometheus
 echo "🔵 Starting Prometheus..."
-# Generate prometheus.yml from template
-envsubst < "$ATHENAGUARD_PATH/configurations/prometheus.template.yml" > "$ATHENAGUARD_PATH/configurations/prometheus.yml"
 cd "$ATHENAGUARD_PATH/$PROMETHEUS_FOLDER"
-nohup ./prometheus --config.file="$ATHENAGUARD_PATH/configurations/prometheus.yml" > "$ATHENAGUARD_PATH/logs/prometheus.log" 2>&1 &
+nohup ./prometheus \
+  --config.file="$ATHENAGUARD_PATH/configurations/prometheus.yml" \
+  --storage.tsdb.retention.time=24h \
+  > "$ATHENAGUARD_PATH/logs/prometheus.log" 2>&1 &
 cd - > /dev/null
 
 # Start Grafana
@@ -35,8 +36,9 @@ cd "$ATHENAGUARD_PATH/$GRAFANA_FOLDER/bin"
 nohup ./grafana-server web > "$ATHENAGUARD_PATH/logs/grafana.log" 2>&1 &
 cd - > /dev/null
 
+# Finish
+echo ""
 echo "✅ All AthenaGuard services started! Logs are in $ATHENAGUARD_PATH/logs"
-
 echo ""
 echo "🔗 Service Status:"
 echo "- Prometheus    : http://$ATHENAGUARD_IP:$PROMETHEUS_PORT"

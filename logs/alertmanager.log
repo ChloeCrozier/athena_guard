@@ -1,10 +1,10 @@
-ts=2025-04-28T22:27:59.151Z caller=main.go:245 level=info msg="Starting Alertmanager" version="(version=0.26.0, branch=HEAD, revision=d7b4f0c7322e7151d6e3b1e31cbc15361e295d8d)"
-ts=2025-04-28T22:27:59.151Z caller=main.go:246 level=info build_context="(go=go1.20.7, platform=linux/amd64, user=root@df8d7debeef4, date=20230824-11:11:58, tags=netgo)"
-ts=2025-04-28T22:27:59.156Z caller=cluster.go:186 level=info component=cluster msg="setting advertise address explicitly" addr=172.17.0.1 port=9094
-ts=2025-04-28T22:27:59.158Z caller=cluster.go:683 level=info component=cluster msg="Waiting for gossip to settle..." interval=2s
-ts=2025-04-28T22:27:59.180Z caller=coordinator.go:113 level=info component=configuration msg="Loading configuration file" file=/home/chloe/athena_guard/configurations/alertmanager.yml
-ts=2025-04-28T22:27:59.180Z caller=coordinator.go:126 level=info component=configuration msg="Completed loading of configuration file" file=/home/chloe/athena_guard/configurations/alertmanager.yml
-ts=2025-04-28T22:27:59.182Z caller=tls_config.go:274 level=info msg="Listening on" address=[::]:9093
-ts=2025-04-28T22:27:59.182Z caller=tls_config.go:277 level=info msg="TLS is disabled." http2=false address=[::]:9093
-ts=2025-04-28T22:28:01.159Z caller=cluster.go:708 level=info component=cluster msg="gossip not settled" polls=0 before=0 now=1 elapsed=2.000689151s
-ts=2025-04-28T22:28:09.162Z caller=cluster.go:700 level=info component=cluster msg="gossip settled; proceeding" elapsed=10.004154434s
+ts=2025-04-30T10:57:18.739Z caller=main.go:245 level=info msg="Starting Alertmanager" version="(version=0.26.0, branch=HEAD, revision=d7b4f0c7322e7151d6e3b1e31cbc15361e295d8d)"
+ts=2025-04-30T10:57:18.739Z caller=main.go:246 level=info build_context="(go=go1.20.7, platform=linux/amd64, user=root@df8d7debeef4, date=20230824-11:11:58, tags=netgo)"
+ts=2025-04-30T10:57:18.745Z caller=cluster.go:186 level=info component=cluster msg="setting advertise address explicitly" addr=172.17.0.1 port=9094
+ts=2025-04-30T10:57:18.745Z caller=cluster.go:683 level=info component=cluster msg="Waiting for gossip to settle..." interval=2s
+ts=2025-04-30T10:57:18.766Z caller=coordinator.go:113 level=info component=configuration msg="Loading configuration file" file=/home/chloe/athena_guard/configurations/alertmanager.yml
+ts=2025-04-30T10:57:18.766Z caller=coordinator.go:126 level=info component=configuration msg="Completed loading of configuration file" file=/home/chloe/athena_guard/configurations/alertmanager.yml
+ts=2025-04-30T10:57:18.768Z caller=tls_config.go:274 level=info msg="Listening on" address=[::]:9093
+ts=2025-04-30T10:57:18.768Z caller=tls_config.go:277 level=info msg="TLS is disabled." http2=false address=[::]:9093
+ts=2025-04-30T10:57:20.746Z caller=cluster.go:708 level=info component=cluster msg="gossip not settled" polls=0 before=0 now=1 elapsed=2.001044116s
+ts=2025-04-30T10:57:28.750Z caller=cluster.go:700 level=info component=cluster msg="gossip settled; proceeding" elapsed=10.004968217s
