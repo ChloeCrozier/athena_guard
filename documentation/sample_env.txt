@@ -1,5 +1,5 @@
 # AthenaGuard environment config
-ATHENAGUARD_PATH=/home/chloe/athena_guard
+ATHENAGUARD_PATH=/home/{usr}/athena_guard
 
 # External IP address
 ATHENAGUARD_IP=130.127.89.162
@@ -17,13 +17,7 @@ ALERTMANAGER_FOLDER=alert_manager/alertmanager-0.26.0.linux-amd64
 GRAFANA_FOLDER=grafana
 
 # Webhooks
-DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/1366531686128422982/APJdou1_g3_2RrYf3Gud6a9uUMWFQXixLt2E7xehqAeJa6k_EYunN10w9-e_UHG55J4N
+DISCORD_WEBHOOK_URL=
 
 # Alert Interval
 SUMMARY_CHECK_INTERVAL_MINUTES=60
-
-
-# Optionals for test alerts
-CURRENT_PORTS_PATH=/home/chloe/athena_guard/configurations/state/current_ports.txt
-LAST_PORTS_PATH=/home/chloe/athena_guard/configurations/state/last_ports.txt
-

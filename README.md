@@ -1,81 +1,168 @@
-# Athena Guard Documentation
+# AthenaGuard
 
-## Getting Started
+![AthenaGuard Logo](./assets/athenaguard_logo.png)
 
-### Clone the Repository
+AthenaGuard is an open-source, modular security and system monitoring framework for Linux-based HPC and SLURM clusters. It integrates Prometheus, Grafana, and custom monitoring scripts to deliver real-time alerting, visual dashboards, and actionable insights. Built for academic and research environments, AthenaGuard supports edge systems, containerized deployments, and distributed clusters.
+
+---
+
+## Features
+
+- **Real-time Monitoring**: Prometheus & Grafana integration.
+- **Security Event Detection**: Logins, sudo usage, zombie processes.
+- **SLURM-Aware Metrics**: Idle GPUs, stalled jobs, job tracking.
+- **Power & Network Monitoring**: Cap violations, port spikes, interface changes.
+- **Dynamic Dashboards**: Auto-updating Grafana panels.
+- **Discord Alerting**: Integration via webhook.
+- **Modular Alert Rules**: Drop `.yml` files in `/alert_rules/`.
+- **Easy Testing**: Sample scripts for quick validation.
+
+---
+
+## How to Start and Stop AthenaGuard
+
+Navigate to the `scripts/` directory and use the helper scripts to manage AthenaGuard’s core services.
+
+### Start
+
 ```bash
-git clone https://github.com/ChloeCrozier/athena_guard.git
+cd scripts/run_scripts
+./start_all.sh
 ```
 
-### Download and Set Up Prometheus
+This starts:
+
+- Node Exporter on port `9100`
+- Prometheus on port `9090`
+- Grafana on port `3000`
+- Alertmanager on port `9093` (if configured)
+
+> **Note**: Ensure correct paths and environment variables are set in `.env`.
+
+### Stop
+
 ```bash
-curl -LO https://github.com/prometheus/prometheus/releases/download/v2.51.2/prometheus-2.51.2.linux-amd64.tar.gz
-tar xvf prometheus-2.51.2.linux-amd64.tar.gz
-mv prometheus-2.51.2.linux-amd64 prometheus
+./stop_all.sh
 ```
 
-### Download and Set Up Node Exporter
+This cleanly stops all services started by `start_all.sh`.
+
+### Check Status
+
 ```bash
-curl -LO https://github.com/prometheus/node_exporter/releases/download/v1.8.1/node_exporter-1.8.1.linux-amd64.tar.gz
-tar xvf node_exporter-1.8.1.linux-amd64.tar.gz
-mv node_exporter-1.8.1.linux-amd64 node_exporter
+./status.sh
 ```
 
-### Download and Set Up Grafana
+---
+
+## Access the Interfaces
+
+- **Grafana**: [http://130.127.89.162:3000](http://130.127.89.162:3000)
+- **Prometheus**: [http://130.127.89.162:9090](http://130.127.89.162:9090)
+- **Alertmanager**: [http://130.127.89.162:9093](http://130.127.89.162:9093)
+- **Node Exporter**: [http://130.127.89.162:9100](http://130.127.89.162:9100)
+
+---
+
+## Using Crontab for Automation
+
+AthenaGuard supports automation through `crontab` for periodic execution of monitoring scripts and alerts.
+
+1. Open the crontab editor:
+    ```bash
+    crontab -e
+    ```
+
+2. Add entries to schedule scripts. For example, to run `detect_new_users.sh` every hour:
+    ```bash
+    0 * * * * /path/to/athena_guard/scripts/alert_scripts/detect_new_users.sh
+    ```
+
+3. Ensure the `.env` file is sourced in your scripts:
+    ```bash
+    source /path/to/athena_guard/configurations/.env
+    ```
+
+For more examples, see `documentation/sample_crontab_entries.md`.
+
+---
+
+## Trigger Sample Alerts
+
+Use the sample scripts in `scripts/alert_scripts/sample_alerts/` to test Discord alerting or Prometheus triggers.
+
+---
+
+## Discord Integration
+
+Define your webhook in `.env`:
+
 ```bash
-curl -LO https://dl.grafana.com/oss/release/grafana-10.2.3.linux-amd64.tar.gz
-tar -zxvf grafana-10.2.3.linux-amd64.tar.gz
-mv grafana-10.2.3 grafana
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/.../...
 ```
 
-## Running the Services
+---
 
-Run the following commands in separate terminals (or use tools like `tmux` or `screen`):
+## Directory Overview
 
-1. **Node Exporter**
-    ```bash
-    cd node_exporter
-    ./node_exporter
-    ```
+```
+athena_guard/
+├── alert_rules/              # YAML rule definitions for Prometheus
+├── configurations/           # State files, IPs, summaries, and .env
+├── scripts/
+│   ├── alert_scripts/        # Rule + summary alerting logic
+│   ├── run_scripts/          # Start/stop/status helpers
+│   └── test_scripts/         # Scripts for testing and validation
+├── node_exporter/            # Node Exporter + athenaguard.prom
+├── prometheus/               # Prometheus binary and config
+├── grafana/                  # Grafana frontend
+├── dashboards/               # JSON dashboards for Grafana
+└── README.md
+```
 
-2. **Prometheus**
-    ```bash
-    cd prometheus
-    ./prometheus --config.file=prometheus.yml
-    ```
+---
 
-3. **Grafana**
-    ```bash
-    cd grafana/bin
-    ./grafana-server web
-    ```
-    **Note:** The default password is `MunitionsAreUsed13!`.
+## Alerts You Can Trigger
 
-## Customizations
+- **New User Logins**: `detect_new_users.sh`
+- **Sudo Command Alerts**: `sudo_usage_alert.sh`
+- **Zombie Process Detection**: `zombie_process_alert.sh`
+- **Blacklisted IP Detection**: `failed_login_blacklist_alert.sh`
+- **Filesystem Usage Warnings**: `filesystem_usage_alert.sh`
+- **Open Port Spikes**: `open_port_spike_alert.sh`
+- **Network Interface Changes**: `network_change_alert.sh`
+- **Login Failure Spike**: `login_failure_spike_alert.sh`
+- **Stalled SLURM Jobs**: `stalled_job_alert.sh`
+- **GPU Idle Detection**: `gpu_idle_alert.sh`
+- **Power Cap Violations**: `power_cap_violation_alert.sh`
 
-1. Create the directory for custom metrics:
-    ```bash
-    mkdir -p /var/lib/node_exporter/textfile_collector/
-    ```
+Sample triggers are available in `scripts/alert_scripts/sample_alerts/`.
 
-2. Define the path for the metrics file:
-    ```bash
-    METRICS_FILE="/var/lib/node_exporter/textfile_collector/athenaguard.prom"
-    ```
+---
 
-3. Output path for custom metrics:
-    ```
-    /var/lib/node_exporter/textfile_collector/athenaguard.prom
-    ```
+## Simulated Data Support
 
-## Notes
-- Ensure all services are running properly before proceeding with customizations.
-- Use the provided paths and commands to set up and run Athena Guard effectively.
-- For further assistance, refer to the official documentation or contact the repository maintainer.
+Simulate `.prom` metric values using scripts like `trigger_sudo_spike.sh` to test dashboards and Discord alerts without real data.
 
-## Accessing the Services
+---
 
-- **Grafana**: [http://130.127.89.162:3000/](http://130.127.89.162:3000/)
-- **Prometheus**: [http://130.127.89.162:9090/](http://130.127.89.162:9090/)
-- **Alertmanager**: [http://130.127.89.162:9093/](http://130.127.89.162:9093/)
-- **Node Exporter**: [http://130.127.89.162:9100/](http://130.127.89.162:9100/)
+## Requirements
+
+- Prometheus >= 2.50
+- Node Exporter >= 1.8
+- Grafana >= 10
+- `jq`, `curl`, `bash`, `cron`
+
+Installations are automated through the steps in `README-installation.md`.
+
+---
+
+## Contributions
+
+Pull requests are welcome! Use GitHub Issues to report bugs or request features. AthenaGuard is open to collaboration for HPC education, research, and competitions.
+
+---
+
+## Maintainer
+
+**Chloe Crozier** — [@ChloeCrozier](https://github.com/ChloeCrozier)y
