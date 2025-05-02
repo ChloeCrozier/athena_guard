@@ -1,6 +1,6 @@
 # AthenaGuard
 
-![AthenaGuard Logo](https://github.com/ChloeCrozier/athena_guard/blob/main/documentation/athena_guard_icon.png)
+![AthenaGuard Logo](https://github.com/ChloeCrozier/athena_guard/blob/main/documentation/athena_guard_logo.png)
 
 AthenaGuard is an open-source, modular security and system monitoring framework for Linux-based HPC and SLURM clusters. It integrates Prometheus, Grafana, and custom monitoring scripts to deliver real-time alerting, visual dashboards, and actionable insights. Built for academic and research environments, AthenaGuard supports edge systems, containerized deployments, and distributed clusters.
 
