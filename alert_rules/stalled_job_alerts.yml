@@ -1,0 +1,12 @@
+groups:
+  - name: stalled_job_alerts
+    rules:
+      - alert: StalledSLURMJob
+        expr: time() - job_last_updated_seconds > 3600
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Stalled SLURM Job"
+          description: "Job has shown no activity for over an hour."
+

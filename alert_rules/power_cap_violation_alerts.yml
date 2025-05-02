@@ -1,0 +1,12 @@
+groups:
+  - name: power_cap_violation_alerts
+    rules:
+      - alert: PowerCapBreached
+        expr: power_usage_watts > 500
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Power Cap Breached"
+          description: "Power consumption exceeded the configured limit of 500W."
+

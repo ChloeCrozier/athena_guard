@@ -10,56 +10,68 @@ LOG_FILE="$ATHENAGUARD_PATH/logs/rule_alerts.log"
 
 mkdir -p "$TMP_DIR"
 
-# Get current firing alerts from Prometheus
+# Fetch alerts from Prometheus
 RESPONSE=$(curl -s "$PROM_URL")
-FIRING=$(echo "$RESPONSE" | jq '.data.alerts[] | select(.state=="firing")')
 
-# Exit if jq fails
-if [ $? -ne 0 ]; then
-  echo "[❌ Error parsing Prometheus response] $(date)" >> "$LOG_FILE"
+if ! echo "$RESPONSE" | jq . > /dev/null 2>&1; then
+  echo "[❌ Invalid Prometheus response] $(date)" >> "$LOG_FILE"
   exit 1
 fi
 
-# Save current alerts state
+# Save full response
 echo "$RESPONSE" > "$CURRENT_FILE"
 
-if [[ -z "$FIRING" ]]; then
-  echo "[No new firing alerts] $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE"
-  exit 0
-fi
+FIRING=$(echo "$RESPONSE" | jq '.data.alerts[] | select(.state=="firing")')
+PENDING=$(echo "$RESPONSE" | jq '.data.alerts[] | select(.state=="pending")')
 
-# Format the alert message
-SUMMARY="🚨 *AthenaGuard Alert Summary* — $(date '+%Y-%m-%d %H:%M:%S')"
-COUNT=0
-DETAILS=""
+SUMMARY="🛡️ **AthenaGuard Alert Summary** — $(date '+%Y-%m-%d %H:%M:%S')"
+FIRING_LIST=""
+PENDING_LIST=""
+FIRING_COUNT=0
+PENDING_COUNT=0
 
+# Format firing alerts
 while IFS= read -r alert; do
   ALERT_NAME=$(echo "$alert" | jq -r '.labels.alertname')
-  SEVERITY=$(echo "$alert" | jq -r '.labels.severity')
-  VALUE=$(echo "$alert" | jq -r '.annotations.description // empty')
-  INSTANCE=$(echo "$alert" | jq -r '.labels.instance // "unknown"')
-
-  DETAILS+="\n• [$SEVERITY] $ALERT_NAME on $INSTANCE — $VALUE"
-  COUNT=$((COUNT + 1))
+  SEVERITY=$(echo "$alert" | jq -r '.labels.severity // "info"')
+  DESC=$(echo "$alert" | jq -r '.annotations.description // "No description"')
+  FIRING_LIST+="\n• [$SEVERITY] **$ALERT_NAME** — $DESC"
+  FIRING_COUNT=$((FIRING_COUNT + 1))
 done < <(echo "$FIRING" | jq -c '.')
 
-if [[ $COUNT -gt 0 ]]; then
-  MESSAGE="$SUMMARY\n$DETAILS"
+# Format pending alerts
+while IFS= read -r alert; do
+  ALERT_NAME=$(echo "$alert" | jq -r '.labels.alertname')
+  DESC=$(echo "$alert" | jq -r '.annotations.description // "No description"')
+  PENDING_LIST+="\n• ⏳ **$ALERT_NAME** (pending) — $DESC"
+  PENDING_COUNT=$((PENDING_COUNT + 1))
+done < <(echo "$PENDING" | jq -c '.')
 
+# Compose final message
+MESSAGE="$SUMMARY"
+
+if [[ $FIRING_COUNT -gt 0 ]]; then
+  MESSAGE+="\n\n🚨 **Firing Alerts ($FIRING_COUNT):**$FIRING_LIST"
+fi
+
+if [[ $PENDING_COUNT -gt 0 ]]; then
+  MESSAGE+="\n\n⏳ **Pending Alerts ($PENDING_COUNT):**$PENDING_LIST"
+fi
+
+# Send to Discord if anything is active
+if [[ $FIRING_COUNT -gt 0 || $PENDING_COUNT -gt 0 ]]; then
   if [ ${#MESSAGE} -gt 1900 ]; then
-    SHORT="🚨 $COUNT alert(s) detected at $(date '+%Y-%m-%d %H:%M:%S')\n📄 See full: logs/rule_alerts.log"
+    SHORT="🚨 $FIRING_COUNT firing / $PENDING_COUNT pending alerts at $(date '+%Y-%m-%d %H:%M')\n📄 See: logs/rule_alerts.log"
     curl -s -X POST -H "Content-Type: application/json" \
-      -d "{\"content\": \"$SHORT\"}" \
-      "$DISCORD_WEBHOOK_URL"
+      -d "{\"content\": \"$SHORT\"}" "$DISCORD_WEBHOOK_URL"
     echo -e "$MESSAGE\n\n" >> "$LOG_FILE"
-    echo "[⚠️ Truncated alert sent] $(date)"
+    echo "[⚠️ Truncated alert sent] $(date)" >> "$LOG_FILE"
   else
     curl -s -X POST -H "Content-Type: application/json" \
-      -d "{\"content\": \"$MESSAGE\"}" \
-      "$DISCORD_WEBHOOK_URL"
-    echo -e "[✅ Rule alert sent to Discord] $(date)" >> "$LOG_FILE"
+      -d "{\"content\": \"$MESSAGE\"}" "$DISCORD_WEBHOOK_URL"
+    echo "[✅ Sent rule alert to Discord] $(date)" >> "$LOG_FILE"
   fi
 else
-  echo "[No new alerts to send] $(date)" >> "$LOG_FILE"
+  echo "[ℹ️ No alerts to send] $(date)" >> "$LOG_FILE"
 fi
 

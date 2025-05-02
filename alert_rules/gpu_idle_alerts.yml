@@ -1,0 +1,12 @@
+groups:
+  - name: gpu_idle_alerts
+    rules:
+      - alert: IdleGPUDetected
+        expr: gpu_utilization == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "GPU Idle Detected"
+          description: "A GPU assigned to a job has been idle for more than 5 minutes."
+
