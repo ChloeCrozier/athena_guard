@@ -1,0 +1,2 @@
+mark /usr/bin/htop
+hacker /bin/su
