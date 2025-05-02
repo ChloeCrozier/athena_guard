@@ -15,4 +15,3 @@ crontab -e
 
 # Delete all logs every 7 days
 0 3 */7 * * /home/chloe/athena_guard/scripts/cleanup/cleanup_logs.sh
-
