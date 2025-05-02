@@ -1,3 +1,8 @@
-prometheus_client
-node_exporter
-slurm-py
+jq>=1.6
+curl
+bash
+grafana>=10.2.3
+prometheus>=2.51.2
+node_exporter>=1.8.1
+tmux
+discord-webhook
